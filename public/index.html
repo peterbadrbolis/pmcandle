@@ -1,0 +1,997 @@
+<!doctype html><html lang="ar" dir="rtl"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style>
+<title>PM Candle</title>
+<meta name="description" content="PM Candle للشموع وتوزيعات المناسبات بالجملة. تصفّح المنتجات وجهّز طلبك وأرسله عبر واتساب.">
+<meta name="theme-color" content="#2c211b">
+<link rel="icon" href="/assets/ac7be2edddbfa49f.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap">
+<style>
+/* Layout concept: wholesale storefront in the Amazon pattern. Dark-brown header with a department search, a strip of department tiles built from product photos, a "new arrivals" rail, a filter sidebar beside a product grid, a product modal and a cart drawer that turns the order into a WhatsApp message. Colours are taken from the PM Candle catalogue: chocolate header, peach ground, caramel price tags, gold ribbon. */
+:root{
+  --bg:#f6ede6; --surface:#ffffff; --surface-2:#fbf5ef; --ink:#2c211b; --muted:#6b5b52; --line:#e7d9ce;
+  --brand:#2c211b; --brand-2:#3d2e26; --brand-ink:#f8ede3;
+  --accent:#8f5630; --tag-bg:#8f5630; --tag-ink:#ffffff;
+  --gold:#e8b445; --gold-2:#d69a1c; --gold-ink:#2a1a07;
+  --ok:#23744a; --warn:#b3401a; --focus:#1f6feb;
+  --shadow:0 10px 30px rgba(44,33,27,.28);
+  --font-ui:'IBM Plex Sans Arabic','Segoe UI',Tahoma,Arial,sans-serif;
+  --font-display:'Cairo','IBM Plex Sans Arabic','Segoe UI',Tahoma,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#16100d; --surface:#221a16; --surface-2:#2a201b; --ink:#f4e9df; --muted:#bba99d; --line:#3b2e27;
+    --accent:#e0a06a; --tag-bg:#a45f31; --ok:#5cc08a; --warn:#ff9b73; --focus:#7db0ff;
+    --shadow:0 10px 30px rgba(0,0,0,.6);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#16100d; --surface:#221a16; --surface-2:#2a201b; --ink:#f4e9df; --muted:#bba99d; --line:#3b2e27;
+  --accent:#e0a06a; --tag-bg:#a45f31; --ok:#5cc08a; --warn:#ff9b73; --focus:#7db0ff;
+  --shadow:0 10px 30px rgba(0,0,0,.6);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-ui);font-size:15px;line-height:1.65}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:70;background:var(--brand)}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.wrap{max-width:1320px;margin-inline:auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.lnk{background:none;border:0;padding:0;cursor:pointer;text-align:start;color:inherit}
+.btn{border-radius:999px;border:1px solid transparent;padding:9px 18px;font-weight:600;cursor:pointer;line-height:1.35;text-align:center;text-decoration:none;display:inline-block}
+.btn.gold{background:var(--gold);color:var(--gold-ink);border-color:var(--gold-2)}
+.btn.gold:hover{background:var(--gold-2)}
+.btn.line{background:transparent;border-color:var(--line);color:var(--ink)}
+.btn.line:hover{background:var(--surface-2)}
+.btn.sm{padding:6px 14px;font-size:13px}
+.btn[disabled],.btn[aria-disabled="true"]{opacity:.45;cursor:not-allowed}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:60;background:var(--brand);color:var(--brand-ink)}
+.top-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;padding-block:8px}
+.brand{display:flex;align-items:center;gap:10px;color:inherit;text-decoration:none;order:1}
+.brand img{height:54px;width:auto;display:block}
+.brand b{font-family:var(--font-display);font-size:21px;font-weight:800;letter-spacing:.02em}
+.search{order:3;flex:1 1 100%;display:flex;min-width:0;border-radius:8px;overflow:hidden;background:var(--surface);border:2px solid var(--gold)}
+.search select{border:0;background:var(--surface-2);color:var(--ink);padding:0 8px;font-size:13px;max-width:34%;border-inline-end:1px solid var(--line)}
+.search input{flex:1;min-width:0;border:0;background:var(--surface);color:var(--ink);padding:10px 12px}
+.search button{border:0;background:var(--gold);color:var(--gold-ink);padding:0 16px;cursor:pointer;display:flex;align-items:center}
+.cart-btn{order:2;margin-inline-start:auto;display:flex;align-items:center;gap:8px;background:transparent;border:1px solid rgba(255,255,255,.35);color:inherit;border-radius:8px;padding:6px 12px;cursor:pointer}
+.cart-btn:hover{border-color:#fff}
+.cart-btn .cnt{background:var(--gold);color:var(--gold-ink);min-width:24px;height:24px;border-radius:99px;font-size:13px;font-weight:700;display:grid;place-items:center;padding:0 6px;font-variant-numeric:tabular-nums}
+@media (min-width:900px){
+  .search{order:2;flex:1 1 auto}
+  .cart-btn{order:3;margin-inline-start:0}
+}
+.subnav{background:var(--brand-2);color:var(--brand-ink)}
+.subnav .wrap{display:flex;gap:4px;overflow-x:auto;padding-block:6px;scrollbar-width:thin}
+.subnav button{flex:none;background:none;border:1px solid transparent;border-radius:6px;padding:4px 12px;cursor:pointer;white-space:nowrap;font-size:14px;color:inherit}
+.subnav button:hover{border-color:rgba(255,255,255,.55)}
+.subnav button[aria-current="true"]{background:rgba(255,255,255,.16)}
+.notice{background:var(--gold);color:var(--gold-ink);font-size:13px;font-weight:600;text-align:center;padding:4px 0}
+
+/* home sections */
+h2.sec{font-family:var(--font-display);font-size:20px;font-weight:700;margin:0}
+.tiles-wrap{padding-block:18px 4px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,160px),1fr));gap:14px;margin-top:12px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:10px;cursor:pointer;text-align:start;min-width:0}
+.tile:hover{border-color:var(--accent)}
+.tile h3{margin:0;font-family:var(--font-display);font-size:17px;font-weight:700}
+.mosaic{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.mosaic img{width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;border-radius:4px;display:block}
+.toast[hidden]{display:none}
+.tile .more{font-size:13px;color:var(--accent);font-weight:500}
+.rail{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;margin-top:16px}
+.rail-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.rail-head .lnk{color:var(--accent);font-size:14px}
+.rail-track{display:flex;gap:12px;overflow-x:auto;scroll-snap-type:x proximity;padding-block:12px 6px}
+.mini{flex:none;width:164px;scroll-snap-align:start;display:flex;flex-direction:column;gap:6px;background:none;border:0;padding:0;cursor:pointer;text-align:start}
+.mini img{width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;border-radius:8px;display:block;background:var(--surface-2)}
+.mini .t{font-size:13.5px;line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:3em}
+.mini .p{font-weight:700;font-variant-numeric:tabular-nums}
+.mini .p small{font-weight:400;color:var(--muted);font-size:12px}
+
+/* shop */
+.shop{display:grid;grid-template-columns:230px minmax(0,1fr);gap:20px;padding-block:22px 44px;align-items:start;scroll-margin-top:140px}
+@media (max-width:820px){.shop{grid-template-columns:minmax(0,1fr)}}
+.filters{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:0}
+.filters>summary{cursor:pointer;padding:12px 14px;font-weight:600;font-family:var(--font-display)}
+.fbody{padding:0 14px 14px;display:flex;flex-direction:column;gap:14px}
+.fgroup h4{margin:0 0 4px;font-size:14px;font-weight:600}
+.fopt{display:flex;align-items:center;gap:8px;padding:3px 0;cursor:pointer;font-size:14px}
+.fopt em{margin-inline-start:auto;font-style:normal;color:var(--muted);font-size:12px;font-variant-numeric:tabular-nums}
+.fopt input{accent-color:var(--accent);width:16px;height:16px}
+.rhead{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 14px;margin-bottom:10px}
+.rhead h2{margin:0;font-family:var(--font-display);font-size:20px;font-weight:700}
+.rhead .cnt{color:var(--muted);font-size:13px}
+.rhead label{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.rhead select{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:5px 8px;color:var(--ink)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.chips button{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:2px 12px;font-size:13px;cursor:pointer}
+.chips button::after{content:" ×";color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,170px),1fr));gap:14px}
+.card{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.card:hover{border-color:var(--accent)}
+.pic{display:block;width:100%;padding:0;border:0;background:var(--surface-2);cursor:pointer;aspect-ratio:4/3}
+.pic img{width:100%;height:100%;object-fit:cover;display:block}
+.card .body{padding:10px 12px 12px;display:flex;flex-direction:column;gap:6px;flex:1}
+.card h3{margin:0;font-size:14.5px;font-weight:500;line-height:1.5;min-height:3em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card h3 .lnk:hover{color:var(--accent);text-decoration:underline}
+.price{display:flex;align-items:baseline;gap:5px;flex-wrap:wrap}
+.price .n{font-family:var(--font-display);font-size:23px;font-weight:700;font-variant-numeric:tabular-nums;line-height:1.2}
+.price .c{font-size:12px;color:var(--muted)}
+.sub{font-size:12.5px;color:var(--muted)}
+.card .btn{margin-top:auto}
+.badge{position:absolute;top:8px;inset-inline-start:8px;z-index:2;background:linear-gradient(135deg,#f6d983,#d69a1c);color:#2a1a07;font-size:11.5px;font-weight:700;padding:1px 9px;border-radius:4px}
+.tag{display:inline-block;align-self:flex-start;background:var(--tag-bg);color:var(--tag-ink);font-size:12px;padding:0 8px;border-radius:4px}
+.empty{text-align:center;padding:40px 12px;color:var(--muted)}
+.empty .btn{margin-top:10px}
+.morewrap{display:flex;justify-content:center;margin-top:18px}
+
+/* modal */
+.modal{position:fixed;inset:0;z-index:90;display:none;align-items:center;justify-content:center;background:rgba(20,12,8,.62);padding:max(12px,env(safe-area-inset-top,0px)) max(12px,env(safe-area-inset-right,0px)) max(12px,env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px))}
+.modal.on{display:flex}
+.panel{position:relative;background:var(--surface);color:var(--ink);border-radius:12px;max-width:1000px;width:100%;max-height:100%;overflow:auto;box-shadow:var(--shadow)}
+.xbtn{position:absolute;top:10px;inset-inline-end:10px;z-index:5;width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:var(--surface);cursor:pointer;display:grid;place-items:center}
+.pm{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:22px;padding:22px}
+@media (max-width:760px){.pm{grid-template-columns:minmax(0,1fr);padding:16px;padding-top:54px}}
+.pm-pic{border-radius:10px;overflow:hidden;background:var(--surface-2);aspect-ratio:4/3;align-self:start}
+.pm-pic img{width:100%;height:100%;object-fit:cover;display:block}
+.pm-info{display:flex;flex-direction:column;gap:12px;min-width:0}
+.crumb{align-self:flex-start;color:var(--accent);font-size:13px}
+.crumb:hover{text-decoration:underline}
+.pm-info h2{margin:0;font-family:var(--font-display);font-size:24px;font-weight:700;line-height:1.4;text-wrap:balance;padding-inline-end:40px}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tags .badge{position:static}
+.pm-price .n{font-family:var(--font-display);font-size:34px;font-weight:800;font-variant-numeric:tabular-nums}
+.pm-price .c{color:var(--muted);font-size:13px}
+fieldset.opt{border:0;padding:0;margin:0;min-width:0}
+.opt legend,.opt .lg{font-weight:600;font-size:14px;margin-bottom:6px;padding:0}
+.choices{display:flex;flex-wrap:wrap;gap:8px}
+.choice{position:relative}
+.choice input{position:absolute;opacity:0;inset:0;cursor:pointer;margin:0}
+.choice span{display:block;border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:6px 14px;font-size:14px}
+.choice input:checked+span{border-color:var(--accent);background:var(--surface-2);box-shadow:inset 0 0 0 1px var(--accent);font-weight:600}
+.choice input:focus-visible+span{outline:3px solid var(--focus);outline-offset:2px}
+.qtyrow{display:flex;align-items:center;flex-wrap:wrap;gap:10px}
+.stepper{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:var(--surface)}
+.stepper button{width:36px;border:0;background:var(--surface-2);cursor:pointer;font-size:19px;line-height:1}
+.stepper button:hover{background:var(--line)}
+.stepper input{width:62px;border:0;text-align:center;background:var(--surface);font-variant-numeric:tabular-nums;-moz-appearance:textfield;padding:6px 0}
+.stepper input::-webkit-outer-spin-button,.stepper input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.qchips{display:flex;gap:6px;flex-wrap:wrap}
+.qchips button{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:2px 12px;font-size:13px;cursor:pointer;font-variant-numeric:tabular-nums}
+.qchips button.on{border-color:var(--accent);background:var(--surface-2);font-weight:600}
+.qchips button[disabled]{opacity:.4;cursor:not-allowed}
+.hint{margin:6px 0 0;font-size:13px;color:var(--muted)}
+.hint.bad{color:var(--warn);font-weight:600}
+.pm-total{display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--line);padding-top:10px}
+.pm-total b{font-family:var(--font-display);font-size:22px;font-variant-numeric:tabular-nums}
+.pm-actions{display:flex;flex-wrap:wrap;gap:8px}
+.pm-actions .btn{flex:1 1 150px}
+.pm-sim{grid-column:1/-1;border-top:1px solid var(--line);padding-top:12px}
+
+/* cart */
+.drawer{position:fixed;top:0;bottom:0;left:0;z-index:100;width:min(450px,100%);background:var(--surface);color:var(--ink);display:flex;flex-direction:column;box-shadow:var(--shadow);transform:translateX(-105%);visibility:hidden;transition:transform .25s ease,visibility .25s;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.drawer.on{transform:none;visibility:visible}
+.dscrim{position:fixed;inset:0;z-index:95;background:rgba(20,12,8,.55);display:none}
+.dscrim.on{display:block}
+.dhead{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--line)}
+.dhead h2{margin:0;font-family:var(--font-display);font-size:19px}
+.dbody{flex:1;overflow:auto;padding:4px 16px 16px;min-height:0}
+.lines{list-style:none;margin:0;padding:0}
+.line{display:grid;grid-template-columns:72px minmax(0,1fr);gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
+.line img{width:72px;height:54px;object-fit:cover;border-radius:6px;display:block}
+.line .nm{font-size:14px;font-weight:500;line-height:1.5}
+.line .op{font-size:12.5px;color:var(--muted)}
+.line .qtyrow{margin-top:6px;gap:8px}
+.line .stepper button{width:30px}
+.line .stepper input{width:52px}
+.lt{font-variant-numeric:tabular-nums;font-size:14px}
+.rm{color:var(--accent);font-size:13px;text-decoration:underline}
+.warn{color:var(--warn);font-size:12.5px;font-weight:600;margin-top:2px}
+.cart-empty{text-align:center;padding:40px 10px;color:var(--muted)}
+.meter{height:8px;background:var(--line);border-radius:99px;overflow:hidden;margin-top:6px}
+.meter i{display:block;height:100%;width:0;background:var(--gold-2);transition:width .2s}
+.meter.full i{background:var(--ok)}
+.minbox{background:var(--surface-2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-top:12px;font-size:13.5px}
+.form{display:grid;gap:10px;margin-top:14px}
+.form h3{margin:0;font-family:var(--font-display);font-size:16px}
+.field{display:flex;flex-direction:column;gap:3px;font-size:13px;color:var(--muted)}
+.field input,.field textarea{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:8px 10px;color:var(--ink);font-size:15px}
+.field textarea{min-height:64px;resize:vertical}
+.dfoot{border-top:1px solid var(--line);padding:12px 16px;display:grid;gap:8px;background:var(--surface)}
+.sumrow{display:flex;justify-content:space-between;align-items:baseline;font-size:14px}
+.sumrow b{font-family:var(--font-display);font-size:21px;font-variant-numeric:tabular-nums}
+.probs{margin:0;padding:0;list-style:none;font-size:12.5px;color:var(--warn)}
+.probs li::before{content:"• "}
+.fcta{display:flex;gap:8px;flex-wrap:wrap}
+.fcta .btn{flex:1 1 140px}
+.ordbox{width:100%;min-height:120px;border:1px solid var(--line);border-radius:8px;padding:8px;background:var(--surface-2);font-size:13px}
+.toast{position:fixed;inset-inline:0;bottom:max(16px,env(safe-area-inset-bottom,0px));display:flex;justify-content:center;pointer-events:none;z-index:120;padding-inline:16px}
+.toast div{pointer-events:auto;background:var(--brand);color:var(--brand-ink);border-radius:10px;padding:10px 14px;display:flex;gap:14px;align-items:center;box-shadow:var(--shadow);font-size:14px}
+.toast button{background:none;border:0;color:var(--gold);font-weight:700;cursor:pointer;text-decoration:underline}
+
+/* Instagram showcase */
+.insta-showcase{margin:8px auto 26px}
+.insta-card{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;gap:18px;padding:22px 26px;border:1px solid var(--line);border-radius:14px;background:linear-gradient(115deg,var(--surface) 0%,var(--surface-2) 100%);box-shadow:var(--shadow)}
+.insta-copy{min-width:0}
+.insta-kicker{display:inline-block;margin-bottom:5px;color:var(--accent);font-size:12px;font-weight:700;letter-spacing:.04em}
+.insta-card h2{margin:0 0 6px;font-family:var(--font-display);font-size:clamp(19px,3vw,25px);font-weight:800}
+.insta-card p{margin:0;color:var(--muted);font-size:14px;line-height:1.8}
+.insta-actions{display:flex;align-items:center;gap:12px;flex-shrink:0}
+.insta-mark{width:54px;height:54px;display:grid;place-items:center;border-radius:15px;background:var(--brand);color:var(--gold)}
+.insta-mark svg{width:28px;height:28px}
+.insta-link{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 18px;border-radius:8px;background:var(--brand);color:var(--brand-ink);font-weight:700;text-decoration:none;white-space:nowrap}
+.insta-link:hover{filter:brightness(1.12)}
+@media(max-width:620px){.insta-card{align-items:flex-start;flex-direction:column;padding:18px}.insta-actions{width:100%;justify-content:space-between}.insta-link{flex:1}}
+
+footer{background:var(--brand);color:var(--brand-ink);padding-block:28px}
+footer .wrap{display:flex;flex-wrap:wrap;gap:16px 40px;align-items:center;justify-content:space-between}
+footer img{height:64px;width:auto;display:block}
+footer p{margin:0;font-size:14px;opacity:.9}
+footer .soc{display:flex;gap:14px}
+footer .soc a{color:var(--gold);text-decoration:underline}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+
+
+/* NIGHT & LIGHT MOOD + site theme selector */
+.theme-controls{order:2;display:flex;align-items:center;gap:8px;position:relative;flex:none}
+.theme-controls .theme-toggle{order:0;margin:0}
+.header-palette{position:relative;display:inline-flex;flex:none}
+.palette-trigger{display:inline-flex;align-items:center;gap:7px;min-height:42px;padding:6px 10px;border:1px solid rgba(255,255,255,.34);border-radius:10px;background:rgba(255,255,255,.08);color:inherit;cursor:pointer}
+.palette-trigger:hover,.palette-trigger[aria-expanded="true"]{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.65)}
+.palette-trigger-icon{width:26px;height:26px;display:grid;place-items:center;border-radius:50%;background:var(--gold);color:var(--gold-ink);font-size:15px}
+.palette-trigger-copy{display:flex;flex-direction:column;align-items:flex-start;line-height:1.2}
+.palette-trigger-copy b{font-size:10px;letter-spacing:.06em}
+.palette-trigger-copy small{font-size:10px;opacity:.82;white-space:nowrap}
+.palette-trigger-chevron{font-size:12px;opacity:.8}
+.header-palette-panel{position:absolute;top:calc(100% + 9px);inset-inline-end:0;z-index:120;width:min(290px,calc(100vw - 24px));padding:12px;border:1px solid var(--line);border-radius:13px;background:var(--surface);color:var(--ink);box-shadow:0 14px 38px rgba(0,0,0,.22)}
+.header-palette-panel[hidden]{display:none!important}
+.header-palette-title{font-size:13px;font-weight:800;margin-bottom:9px;color:var(--ink)}
+.header-palette-panel .recommend-themes{display:grid;grid-template-columns:1fr;gap:7px}
+.header-palette-panel .palette-choice{padding:8px;gap:9px}
+.header-palette-panel .palette-swatches i{height:27px;width:11px}
+@media(min-width:900px){.theme-controls{order:3;margin-inline-start:auto}.cart-btn{order:4}}
+@media(max-width:520px){.theme-controls{gap:5px}.palette-trigger{padding:5px 7px;gap:5px;min-height:40px}.palette-trigger-icon{width:23px;height:23px}.palette-trigger-copy b,.palette-trigger-copy small{font-size:9px}.theme-controls .theme-toggle{padding:5px 7px;gap:5px}.theme-controls .theme-toggle-copy b{font-size:8px}.theme-controls .theme-toggle-icon{width:23px;height:23px}}
+
+/* NIGHT & LIGHT MOOD switch */
+.theme-toggle{order:2;display:inline-flex;align-items:center;gap:9px;border:1px solid rgba(255,255,255,.34);border-radius:10px;padding:6px 11px;background:rgba(255,255,255,.08);color:inherit;cursor:pointer;min-height:42px}
+.theme-toggle:hover{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.65)}
+.theme-toggle-icon{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--gold);color:var(--gold-ink);font-size:19px;line-height:1}
+.theme-toggle-copy{display:flex;flex-direction:column;align-items:flex-start;line-height:1.25}
+.theme-toggle-copy b{font-size:10px;letter-spacing:.07em;white-space:nowrap}
+.theme-toggle-copy small{font-size:10px;opacity:.78}
+@media(min-width:900px){.theme-toggle{order:0;margin-inline-start:0}.cart-btn{order:4}}
+@media(max-width:520px){.theme-toggle{padding:5px 8px;gap:6px}.theme-toggle-copy b{font-size:9px}.theme-toggle-icon{width:25px;height:25px}}
+
+/* Product recommender */
+.recommend-section{margin-block:12px 28px;padding:22px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(125deg,var(--surface),var(--surface-2));box-shadow:var(--shadow)}
+.recommend-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.recommend-kicker{display:block;color:var(--accent);font-size:11px;font-weight:800;letter-spacing:.09em;margin-bottom:4px}
+.recommend-head h2{font-size:clamp(19px,3vw,24px)!important}
+.recommend-head p{margin:5px 0 0;color:var(--muted);font-size:14px}
+.recommend-spark{width:48px;height:48px;flex:none;border-radius:14px;display:grid;place-items:center;background:var(--brand);color:var(--gold);font-size:25px}
+.recommend-controls{display:flex;align-items:end;flex-wrap:wrap;gap:12px;margin-top:18px;padding:14px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.recommend-controls label{display:grid;gap:5px;flex:1 1 190px;font-size:13px;color:var(--muted);font-weight:600}
+.recommend-controls select{width:100%;min-height:42px;border:1px solid var(--line);border-radius:8px;background:var(--surface-2);color:var(--ink);padding:7px 10px}
+.recommend-controls .btn{min-height:42px;flex:0 0 auto}
+.recommend-results{margin-top:14px}
+.recommend-results .grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,155px),1fr));gap:11px}
+.recommend-placeholder{margin:0;padding:16px;text-align:center;color:var(--muted);background:var(--surface);border:1px dashed var(--line);border-radius:10px}
+.recommend-note{margin:0 0 10px;color:var(--muted);font-size:13px}
+.recommend-empty{margin:0;padding:16px;text-align:center;color:var(--muted);background:var(--surface);border-radius:10px}
+@media(max-width:600px){.recommend-section{padding:16px}.recommend-controls{align-items:stretch}.recommend-controls .btn{width:100%}.recommend-spark{width:40px;height:40px}}
+
+/* Social profile logos */
+footer .soc{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap}
+footer .soc a.social-link{width:70px;min-height:76px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;border:1px solid rgba(255,255,255,.2);border-radius:16px;background:rgba(255,255,255,.07);color:var(--brand-ink);text-decoration:none;transition:transform .18s ease,background .18s ease,border-color .18s ease}
+footer .soc a.social-link:hover{transform:translateY(-3px);background:rgba(255,255,255,.15);border-color:var(--gold)}
+footer .soc a.social-link svg{width:27px;height:27px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+footer .soc a.social-link .solid{fill:currentColor;stroke:none}
+footer .soc a.social-link span{font-size:10px;font-weight:700}
+@media(max-width:520px){footer .soc{gap:7px}footer .soc a.social-link{width:62px;min-height:68px;border-radius:13px}}
+
+
+/* Recommendation quantity input and selectable site palettes */
+.recommend-controls input[type="number"]{width:100%;min-height:42px;border:1px solid var(--line);border-radius:8px;background:var(--surface-2);color:var(--ink);padding:7px 10px;font:inherit}
+.recommend-controls label small{font-size:11px;font-weight:500;color:var(--muted)}
+.recommend-theme-picker{margin-top:14px;padding:14px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+.recommend-theme-title{font-size:13px;font-weight:800;margin-bottom:10px;color:var(--ink)}
+.recommend-themes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.palette-choice{min-width:0;display:flex;align-items:center;gap:10px;text-align:start;padding:10px;border:1px solid var(--line);border-radius:11px;background:var(--surface-2);color:var(--ink);cursor:pointer;transition:border-color .15s,transform .15s,box-shadow .15s}
+.palette-choice:hover{transform:translateY(-2px);border-color:var(--accent)}
+.palette-choice[aria-pressed="true"]{border:2px solid var(--accent);box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 15%,transparent)}
+.palette-swatches{display:flex;flex:none;align-items:center;gap:3px}
+.palette-swatches i{display:block;width:13px;height:34px;border-radius:5px;border:1px solid rgba(0,0,0,.08)}
+.palette-swatches.classic i:nth-child(1){background:#f6ede6}.palette-swatches.classic i:nth-child(2){background:#2c211b}.palette-swatches.classic i:nth-child(3){background:#e8b445}
+.palette-swatches.rose i:nth-child(1){background:#fff0f3}.palette-swatches.rose i:nth-child(2){background:#65354b}.palette-swatches.rose i:nth-child(3){background:#e8aebf}
+.palette-swatches.olive i:nth-child(1){background:#edf0e6}.palette-swatches.olive i:nth-child(2){background:#344333}.palette-swatches.olive i:nth-child(3){background:#d6c58a}
+.palette-choice-copy{display:grid;gap:2px;min-width:0}.palette-choice-copy b{font-size:12px;line-height:1.3}.palette-choice-copy small{font-size:10px;color:var(--muted)}
+.recommend-submit{margin-top:12px;min-height:44px}
+.recommend-total{font-weight:800;color:var(--accent);margin:7px 0}
+.recommend-qty-note{font-size:12px;color:var(--muted)}
+:root[data-palette="rose"]{--bg:#fff0f3;--surface:#fffafd;--surface-2:#fce8ed;--ink:#442b35;--muted:#866b76;--line:#efd2dc;--brand:#522b3d;--brand-2:#68384d;--brand-ink:#fff4f7;--accent:#b65b7b;--tag-bg:#a94e70;--tag-ink:#fff;--gold:#e8aebf;--gold-2:#d88da6;--gold-ink:#452132;--ok:#28754f;--warn:#b34052;--shadow:0 10px 30px rgba(82,43,61,.18)}
+:root[data-palette="olive"]{--bg:#edf0e6;--surface:#fffdf5;--surface-2:#f3f0df;--ink:#333b2c;--muted:#68705d;--line:#d8dfc9;--brand:#344333;--brand-2:#4b5c42;--brand-ink:#f3f5e8;--accent:#72834d;--tag-bg:#617442;--tag-ink:#fff;--gold:#d6c58a;--gold-2:#c2ad68;--gold-ink:#2f331f;--ok:#39784c;--warn:#a34e36;--shadow:0 10px 30px rgba(52,67,51,.18)}
+:root[data-theme="dark"][data-palette="rose"]{--bg:#1d1218;--surface:#2b1c24;--surface-2:#36232d;--ink:#f8eaf0;--muted:#c4a8b5;--line:#503543;--brand:#26151e;--brand-2:#3b2230;--brand-ink:#fff0f5;--accent:#e5a0bb;--tag-bg:#a94e70;--gold:#d98ba8;--gold-2:#c87697;--gold-ink:#29131d;--shadow:0 10px 30px rgba(0,0,0,.55)}
+:root[data-theme="dark"][data-palette="olive"]{--bg:#151b13;--surface:#222b20;--surface-2:#2a3527;--ink:#eff3e8;--muted:#b4c0a8;--line:#3d4b37;--brand:#1d291c;--brand-2:#2b3b29;--brand-ink:#f2f6e9;--accent:#b2c28a;--tag-bg:#617442;--gold:#c4b176;--gold-2:#b39e61;--gold-ink:#222719;--shadow:0 10px 30px rgba(0,0,0,.55)}
+@media(max-width:700px){.recommend-themes{grid-template-columns:1fr}.palette-choice{padding:9px 11px}.palette-swatches i{height:28px}.recommend-submit{width:100%}}
+</style>
+
+</head><body>
+<noscript><p>يرجى تفعيل JavaScript لعرض المنتجات وتجهيز طلبك. للتواصل: <a href="https://wa.me/201277604439">واتساب PM Candle</a>.</p></noscript>
+<div id="app" dir="rtl" lang="ar">
+<h1 class="sr">PM Candle، شموع وتوزيعات مناسبات بالجملة</h1>
+<header class="top">
+  <div class="wrap top-row">
+    <a class="brand" href="#" data-act="home" aria-label="PM Candle"><img data-logo alt=""><b>PM Candle</b></a>
+    <form class="search" id="searchForm" role="search">
+      <select id="searchCat" aria-label="القسم"></select>
+      <input id="q" type="search" placeholder="ابحث عن دبدوب، توليب، بابلز، جار…" autocomplete="off" aria-label="بحث">
+      <button type="submit" aria-label="بحث"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg></button>
+    </form>
+    <div class="theme-controls">
+      <button class="theme-toggle" type="button" data-act="toggle-theme" aria-label="تغيير الوضع بين Night و Light" aria-pressed="false">
+        <span class="theme-toggle-icon" aria-hidden="true">☾</span>
+        <span class="theme-toggle-copy"><b>NIGHT &amp; LIGHT MOOD</b><small id="themeMoodLabel">LIGHT MODE</small></span>
+      </button>
+      <div class="header-palette">
+        <button class="palette-trigger" type="button" data-act="toggle-palette-menu" aria-expanded="false" aria-controls="paletteMenu" aria-label="اختيار ثيم الموقع">
+          <span class="palette-trigger-icon" aria-hidden="true">🎨</span>
+          <span class="palette-trigger-copy"><b>THEME</b><small id="paletteCurrentLabel">Classic Beige</small></span>
+          <span class="palette-trigger-chevron" aria-hidden="true">▾</span>
+        </button>
+        <div class="header-palette-panel" id="paletteMenu" hidden>
+          <div class="header-palette-title">اختار ثيم الموقع</div>
+      <div class="recommend-themes" role="group" aria-label="ثيمات الموقع المتاحة">
+        <button class="palette-choice" type="button" data-palette-choice="classic" aria-pressed="true">
+          <span class="palette-swatches classic" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="palette-choice-copy"><b>Classic Beige</b><small>بيج وذهبي دافئ</small></span>
+        </button>
+        <button class="palette-choice" type="button" data-palette-choice="rose" aria-pressed="false">
+          <span class="palette-swatches rose" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="palette-choice-copy"><b>Rose Blush</b><small>وردي رومانسي</small></span>
+        </button>
+        <button class="palette-choice" type="button" data-palette-choice="olive" aria-pressed="false">
+          <span class="palette-swatches olive" aria-hidden="true"><i></i><i></i><i></i></span>
+          <span class="palette-choice-copy"><b>Olive Calm</b><small>زيتي وبيج هادئ</small></span>
+        </button>
+      </div>
+        </div>
+      </div>
+    </div>
+    <button class="cart-btn" type="button" data-act="cart" aria-label="السلة">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 1.9-1.4L21 8H6"/><circle cx="10" cy="20" r="1.3"/><circle cx="17" cy="20" r="1.3"/></svg>
+      <span>السلة</span><span class="cnt" id="cartCnt">0</span>
+    </button>
+  </div>
+  <nav class="subnav" aria-label="الأقسام"><div class="wrap" id="subnav"></div></nav>
+  <div class="notice">لا يتم تأكيد الأوردر إلا عند وصول إجمالي السلة إلى 30 قطعة أو أكثر · خصم 20% لو الأوردر أكتر من 100 قطعة · الأسعار بالجنيه المصري للقطعة</div>
+</header>
+
+<main>
+  <section class="wrap tiles-wrap" aria-labelledby="tilesH">
+    <h2 class="sec" id="tilesH">تسوّق حسب القسم</h2>
+    <div class="tiles" id="tiles"></div>
+    <div class="rail">
+      <div class="rail-head"><h2 class="sec">وصل حديثاً</h2><button class="lnk" type="button" data-act="only-new">عرض الكل</button></div>
+      <div class="rail-track" id="rail"></div>
+    </div>
+  </section>
+
+  <section class="wrap insta-showcase" aria-labelledby="instaTitle">
+    <div class="insta-card">
+      <div class="insta-copy">
+        <span class="insta-kicker">PM CANDLE · REAL ORDERS</span>
+        <h2 id="instaTitle">شوفوا شغلنا على الطبيعة</h2>
+        <p>حابين تشوفوا شكل منتجاتنا وتنفيذاتنا الحقيقية؟ زوروا صفحتنا على إنستجرام وشوفوا شغلنا وصور الأوردرات.</p>
+      </div>
+      <div class="insta-actions">
+        <span class="insta-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="5"></rect>
+            <circle cx="12" cy="12" r="4"></circle>
+            <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"></circle>
+          </svg>
+        </span>
+        <a class="insta-link" href="https://www.instagram.com/pm.candle2026?rpxt=NzMxOWFreXJ5enNm" target="_blank" rel="noopener noreferrer" aria-label="شاهدوا شغل PM Candle على إنستجرام">
+          شوفوا شغلنا على Instagram <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="wrap recommend-section" aria-labelledby="recommendTitle" id="recommendations">
+    <div class="recommend-head">
+      <div>
+        <span class="recommend-kicker">PM CANDLE · SMART PICKS</span>
+        <h2 class="sec" id="recommendTitle">خلّينا نرشحلك المنتجات المناسبة</h2>
+        <p>اختاري المناسبة والميزانية وعدد القطع. هنرشحلك منتجات فعلية من الكتالوج مع حساب إجمالي الكمية.</p>
+      </div>
+      <span class="recommend-spark" aria-hidden="true">✦</span>
+    </div>
+    <div class="recommend-controls">
+      <label>المناسبة
+        <select id="recommendOccasion">
+          <option value="baby">سبوع وبيبي</option>
+          <option value="wedding">خطوبة وكتب كتاب وفرح</option>
+          <option value="gift">هدايا ومناسبات</option>
+          <option value="decor">ديكور وأجواء مميزة</option>
+          <option value="all">أي مناسبة</option>
+        </select>
+      </label>
+      <label>ميزانيتك للقطعة
+        <select id="recommendBudget">
+          <option value="all">كل الأسعار</option>
+          <option value="40">أقل من 40 جنيه</option>
+          <option value="60">من 40 إلى 59 جنيه</option>
+          <option value="100">من 60 إلى 99 جنيه</option>
+          <option value="high">100 جنيه فأكثر</option>
+        </select>
+      </label>
+      <label>عايز كام قطعة؟
+        <input id="recommendQty" type="number" inputmode="numeric" min="30" step="1" value="30" required aria-describedby="recommendQtyHint">
+        <small id="recommendQtyHint">الحد الأدنى للطلب 30 قطعة</small>
+      </label>
+    </div>
+
+    <button class="btn gold recommend-submit" type="button" data-act="recommend">رشّحلي منتجات</button>
+    <div class="recommend-results" id="recommendResults" aria-live="polite">
+      <p class="recommend-placeholder">اختاري المناسبة والميزانية واضغطي «رشّحلي منتجات» لعرض اقتراحات مناسبة.</p>
+    </div>
+  </section>
+
+  <section class="wrap shop" id="shop" aria-labelledby="rtitle">
+    <details class="filters" id="filters" open>
+      <summary>تصفية النتائج</summary>
+      <div class="fbody" id="fbody"></div>
+    </details>
+    <div>
+      <div class="rhead">
+        <div><h2 id="rtitle">كل المنتجات</h2><div class="cnt" id="rcount" aria-live="polite"></div></div>
+        <label>ترتيب حسب
+          <select id="sort">
+            <option value="catalog">ترتيب الكتالوج</option>
+            <option value="asc">السعر: من الأقل</option>
+            <option value="desc">السعر: من الأعلى</option>
+            <option value="new">وصل حديثاً أولاً</option>
+          </select>
+        </label>
+      </div>
+      <div class="chips" id="achips"></div>
+      <div class="grid" id="grid"></div>
+      <div class="empty" id="empty" hidden>
+        <p>لا توجد منتجات مطابقة. جرّب كلمة بحث أخرى أو امسح التصفية.</p>
+        <button class="btn gold" type="button" data-act="clear-all">مسح التصفية</button>
+      </div>
+      <div class="morewrap"><button class="btn line" type="button" id="more" data-act="more">عرض المزيد</button></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <img data-logo alt="PM Candle">
+    <div>
+      <p><b>PM Candle</b> · شموع وتوزيعات مناسبات بالجملة</p>
+      <p>الحد الأدنى للصنف 10 قطع · بعض الأصناف لها حد أدنى خاص · لا يتم تأكيد الأوردر إلا عند وصول إجمالي السلة إلى 30 قطعة أو أكثر · خصم 20% على الأوردر لو أكتر من 100 قطعة</p>
+    </div>
+    <div class="soc" id="soc"></div>
+  </div>
+</footer>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="pmTitle">
+  <div class="panel" id="panel"></div>
+</div>
+
+<div class="dscrim" id="dscrim"></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="dTitle">
+  <div class="dhead"><h2 id="dTitle">سلة الطلب</h2><button class="xbtn" style="position:static" type="button" data-act="close-cart" aria-label="إغلاق"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M5 5l14 14M19 5 5 19"/></svg></button></div>
+  <div class="dbody" id="dbody">
+    <ul class="lines" id="lines"></ul>
+    <div class="cart-empty" id="cartEmpty"><p>السلة فارغة.</p><button class="btn gold" type="button" data-act="close-cart">تصفّح المنتجات</button></div>
+    <div id="cartRest">
+      <div class="minbox"><div id="minTxt"></div><div class="meter" id="meter"><i></i></div><div class="hint" id="discTxt" style="font-weight:600"></div></div>
+      <form class="form" id="orderForm" onsubmit="return false">
+        <h3>بيانات الطلب</h3>
+        <label class="field" for="fName">الاسم<input id="fName" autocomplete="name"></label>
+        <label class="field" for="fPhone">رقم الموبايل<input id="fPhone" type="tel" inputmode="tel" autocomplete="tel"></label>
+        <label class="field" for="fCity">المحافظة / العنوان<input id="fCity" autocomplete="street-address"></label>
+        <label class="field" for="fDate">تاريخ المناسبة<input id="fDate" placeholder="مثال: 15 ديسمبر"></label>
+        <label class="field" for="fNote">ملاحظات (الاسم على الكارت، الألوان، العطر…)<textarea id="fNote"></textarea></label>
+      </form>
+      <textarea class="ordbox" id="ordbox" readonly hidden aria-label="نص الطلب"></textarea>
+    </div>
+  </div>
+  <div class="dfoot" id="dfoot">
+    <div class="sumrow" id="discRow" hidden style="font-size:13px;color:var(--ok)"><span>قبل الخصم <s id="sSub"></s></span><span>خصم <span id="sPct"></span>% <b id="sDisc" style="font-size:15px"></b></span></div>
+    <div class="sumrow"><span>عدد القطع: <b id="sPieces">0</b></span><span><span id="sLbl">إجمالي المنتجات</span> <b id="sTotal">0</b> ج.م</span></div>
+    <ul class="probs" id="probs"></ul>
+    <div class="fcta">
+      <a class="btn gold" id="waBtn" href="#" target="_blank" rel="noopener" aria-disabled="true">إرسال الطلب عبر واتساب</a>
+      <button class="btn line" type="button" data-act="copy">نسخ نص الطلب</button>
+    </div>
+    <div class="hint" style="margin:0">الشحن يُحدد عند تأكيد الطلب.</div>
+  </div>
+</aside>
+
+<div class="toast" id="toast" hidden><div><span id="toastTxt"></span><button type="button" data-act="cart" id="toastBtn">عرض السلة</button></div></div>
+</div>
+
+<script>
+(function(){
+'use strict';
+document.documentElement.setAttribute('dir','rtl');
+document.documentElement.setAttribute('lang','ar');
+
+// Set the WhatsApp number (digits with country code, e.g. 201001234567) and the social links here.
+var STORE={whatsapp:'201277604439',facebook:'https://www.facebook.com/profile.php?id=61577439134472',instagram:'https://www.instagram.com/pm.candle2026/',tiktok:'https://www.tiktok.com/@pm.candle',orderMin:30,discountOver:100,discountPct:20};
+var CATS=[{id:'bears',name:'دباديب'},{id:'flowers',name:'ورود وتوليب'},{id:'animals',name:'حيوانات وبيبي'},{id:'shapes',name:'بابلز وأشكال'},{id:'jars',name:'جارات وعلب'},{id:'gifts',name:'عطور وهدايا'}];
+var BUCKETS=[
+  {id:'all',name:'كل الأسعار'},
+  {id:'u40',name:'أقل من 40 ج.م',f:function(x){return x<40}},
+  {id:'40',name:'من 40 إلى 59 ج.م',f:function(x){return x>=40&&x<60}},
+  {id:'60',name:'من 60 إلى 99 ج.م',f:function(x){return x>=60&&x<100}},
+  {id:'100',name:'100 ج.م فأكثر',f:function(x){return x>=100}}
+];
+var LOGO='/assets/ac7be2edddbfa49f.png';
+var PRODUCTS=[{"name":"شوز البيبي","cat":"animals","v":[{"l":"","p":34}],"scent":5,"min":0,"isNew":false,"note":"","id":1,"img":"/assets/731eccc207e7a719.jpg"},{"name":"اسم كاندي شمع 5 حروف","cat":"shapes","v":[{"l":"","p":38}],"scent":5,"min":0,"isNew":false,"note":"","id":2,"img":"/assets/9c7370ab874ea347.jpg"},{"name":"وردة توليب تغليف بوكس","cat":"flowers","v":[{"l":"","p":37}],"scent":5,"min":0,"isNew":false,"note":"","id":3,"img":"/assets/dbafa75bc9160f36.jpg"},{"name":"ميني جار زجاج","cat":"jars","v":[{"l":"","p":47}],"scent":5,"min":0,"isNew":false,"note":"","id":4,"img":"/assets/2e5308a87cbf6a3e.jpg"},{"name":"كارت + بيرفيوم / سبلاش 10 مل","cat":"gifts","v":[{"l":"بيرفيوم 10 مل","p":85},{"l":"سبلاش 10 مل","p":50}],"scent":0,"min":0,"isNew":false,"note":"","id":5,"img":"/assets/c2a100298583670a.jpg"},{"name":"كارت بيرفيوم / سبلاش 5 مل","cat":"gifts","v":[{"l":"بيرفيوم 5 مل","p":60},{"l":"سبلاش 5 مل","p":35}],"scent":0,"min":0,"isNew":false,"note":"","id":6,"img":"/assets/ce80fa7a42a4661d.jpg"},{"name":"مسك + كارت","cat":"gifts","v":[{"l":"","p":50}],"scent":0,"min":0,"isNew":false,"note":"","id":7,"img":"/assets/cd6c06e7fa538e90.jpg"},{"name":"صنية + شيكولاتة + ملبس","cat":"gifts","v":[{"l":"","p":60}],"scent":0,"min":0,"isNew":false,"note":"","id":8,"img":"/assets/fb29669e98c77264.jpg"},{"name":"دبدوب كب كيك تغليف تل","cat":"bears","v":[{"l":"","p":37}],"scent":7,"min":0,"isNew":false,"note":"","id":9,"img":"/assets/754d5ee151c01e5f.jpg"},{"name":"فيل ولد تغليف تل","cat":"animals","v":[{"l":"","p":44}],"scent":5,"min":0,"isNew":false,"note":"","id":10,"img":"/assets/59faadafd70ee8fd.jpg"},{"name":"دبدوب في جار أكليريك","cat":"bears","v":[{"l":"","p":53}],"scent":5,"min":0,"isNew":false,"note":"","id":11,"img":"/assets/e70944c286da52ab.jpg"},{"name":"بطة تغليف تل","cat":"animals","v":[{"l":"","p":42}],"scent":5,"min":0,"isNew":false,"note":"","id":12,"img":"/assets/8788a044c9b52417.jpg"},{"name":"سحاب تغليف سلوفان","cat":"shapes","v":[{"l":"","p":25}],"scent":5,"min":0,"isNew":false,"note":"","id":13,"img":"/assets/6b0746a0e985e2ba.jpg"},{"name":"وردة عباد شمس + كارت","cat":"flowers","v":[{"l":"","p":45}],"scent":5,"min":0,"isNew":false,"note":"","id":14,"img":"/assets/22ad03aa841e5cd0.jpg"},{"name":"فواحة + ورد مجفف","cat":"gifts","v":[{"l":"","p":40}],"scent":0,"min":0,"isNew":false,"note":"","id":15,"img":"/assets/37a47821e182fffe.jpg"},{"name":"سبحة + كارت","cat":"gifts","v":[{"l":"","p":33}],"scent":0,"min":0,"isNew":false,"note":"","id":16,"img":"/assets/73a8729697ee5985.jpg"},{"name":"بابلز حجم كبير + تغليف تل","cat":"shapes","v":[{"l":"","p":62}],"scent":5,"min":0,"isNew":true,"note":"","id":17,"img":"/assets/c3e8f15c297e9e97.jpg"},{"name":"بابلز حجم كبير قلوب","cat":"shapes","v":[{"l":"","p":68}],"scent":5,"min":0,"isNew":true,"note":"","id":18,"img":"/assets/aae0cf9fd5406a1e.jpg"},{"name":"فراشة مقاس وسط تغليف تل","cat":"animals","v":[{"l":"","p":37}],"scent":5,"min":0,"isNew":true,"note":"","id":19,"img":"/assets/76009b8c816b15c5.jpg"},{"name":"دبدوب قلب تغليف بوكس","cat":"bears","v":[{"l":"","p":52}],"scent":5,"min":0,"isNew":true,"note":"","id":20,"img":"/assets/b3bbae63e865d9a4.jpg"},{"name":"فيل بنت تغليف تل","cat":"animals","v":[{"l":"","p":42}],"scent":5,"min":0,"isNew":true,"note":"","id":21,"img":"/assets/b9fbaf21c7beb314.jpg"},{"name":"ضرس تغليف تل","cat":"animals","v":[{"l":"","p":35}],"scent":5,"min":0,"isNew":true,"note":"","id":22,"img":"/assets/8e0952c65e23375f.jpg"},{"name":"دبدوب 8 سم تغليف تل","cat":"bears","v":[{"l":"","p":49}],"scent":5,"min":0,"isNew":true,"note":"","id":23,"img":"/assets/7d3299965c40c738.jpg"},{"name":"وردة توليب 2.5 سم تغليف تل","cat":"flowers","v":[{"l":"","p":25}],"scent":5,"min":0,"isNew":true,"note":"","id":24,"img":"/assets/aeced446ea0ee162.jpg"},{"name":"فراشة صغيرة تغليف سلوفان","cat":"animals","v":[{"l":"","p":26}],"scent":6,"min":0,"isNew":false,"note":"","id":25,"img":"/assets/9ad61fa5f55d027f.jpg"},{"name":"بيبي تغليف تل","cat":"animals","v":[{"l":"","p":37}],"scent":5,"min":0,"isNew":false,"note":"","id":26,"img":"/assets/bcd612ab24a8c2f6.jpg"},{"name":"وردة توليب تغليف تل بالعصا","cat":"flowers","v":[{"l":"","p":31}],"scent":5,"min":0,"isNew":false,"note":"","id":27,"img":"/assets/e40f40fa881860fa.jpg"},{"name":"أشكال سبوع متنوعة","cat":"animals","v":[{"l":"","p":48}],"scent":5,"min":0,"isNew":false,"note":"السعر للقطعة","id":28,"img":"/assets/42e99e394e3327a5.jpg"},{"name":"بوكس (رجل + حرف + قلب)","cat":"jars","v":[{"l":"","p":72}],"scent":5,"min":0,"isNew":false,"note":"","id":29,"img":"/assets/bc065ab55b7cbe7b.jpg"},{"name":"دبدوب قلب + جار زجاج","cat":"jars","v":[{"l":"","p":117}],"scent":10,"min":0,"isNew":false,"note":"","id":30,"img":"/assets/0d8a817a9d4a77a4.jpg"},{"name":"زرافة + بوكس + اسم","cat":"animals","v":[{"l":"","p":77}],"scent":5,"min":0,"isNew":false,"note":"","id":31,"img":"/assets/0f74e7fa0eb265d4.jpg"},{"name":"أسد + بوكس","cat":"animals","v":[{"l":"","p":72}],"scent":5,"min":0,"isNew":false,"note":"","id":32,"img":"/assets/979d20d5f2bb0371.jpg"},{"name":"حرف تغليف سلوفان","cat":"shapes","v":[{"l":"","p":37}],"scent":5,"min":0,"isNew":false,"note":"","id":33,"img":"/assets/79f041b93a571ab6.jpg"},{"name":"فيل تغليف تل","cat":"animals","v":[{"l":"","p":39}],"scent":5,"min":0,"isNew":false,"note":"","id":34,"img":"/assets/53a3a15c071e7793.jpg"},{"name":"أسد تغليف تل","cat":"animals","v":[{"l":"","p":40}],"scent":5,"min":0,"isNew":false,"note":"","id":35,"img":"/assets/3f0d73082de38236.jpg"},{"name":"كابلز تغليف بوكس","cat":"shapes","v":[{"l":"","p":87}],"scent":5,"min":0,"isNew":false,"note":"","id":36,"img":"/assets/3d043c1d49a9f993.jpg"},{"name":"فستان العروسة تغليف تل","cat":"shapes","v":[{"l":"","p":50}],"scent":5,"min":0,"isNew":false,"note":"","id":37,"img":"/assets/6ec964ca9ca7d262.jpg"},{"name":"دبدوب قلب تغليف تل","cat":"bears","v":[{"l":"","p":38}],"scent":5,"min":0,"isNew":false,"note":"","id":38,"img":"/assets/5af86eeb0df5395c.jpg"},{"name":"دبدوب 4 سم تغليف بوكس","cat":"bears","v":[{"l":"","p":38}],"scent":5,"min":0,"isNew":false,"note":"","id":39,"img":"/assets/204593a80e2b6301.jpg"},{"name":"وردة جوري 10 سم تغليف بوكس","cat":"flowers","v":[{"l":"","p":57}],"scent":5,"min":0,"isNew":false,"note":"","id":40,"img":"/assets/de77fe3b88138f86.jpg"},{"name":"دبدوب 4 سم تغليف تل","cat":"bears","v":[{"l":"","p":30}],"scent":5,"min":0,"isNew":false,"note":"","id":41,"img":"/assets/98990d6175275072.jpg"},{"name":"حرف وقلب","cat":"shapes","v":[{"l":"","p":28}],"scent":5,"min":0,"isNew":false,"note":"","id":42,"img":"/assets/492c94c6e43b1331.jpg"},{"name":"فراشة + كارت","cat":"animals","v":[{"l":"","p":55}],"scent":5,"min":0,"isNew":false,"note":"","id":43,"img":"/assets/1bb5f30bb60ec5b5.jpg"},{"name":"بنبونيرة زجاج + وردة عباد شمس + تغليف تل","cat":"jars","v":[{"l":"","p":77}],"scent":10,"min":0,"isNew":false,"note":"","id":44,"img":"/assets/b3ef897e7b284e51.jpg"},{"name":"دبدوب 4 سم + كب كيك + قلب","cat":"bears","v":[{"l":"","p":44}],"scent":5,"min":0,"isNew":false,"note":"","id":45,"img":"/assets/0d34741310d9b51e.jpg"},{"name":"وردة عباد شمس بالعصا","cat":"flowers","v":[{"l":"","p":32}],"scent":5,"min":0,"isNew":false,"note":"","id":46,"img":"/assets/693869812e298852.jpg"},{"name":"جار زجاج + وردة جوري","cat":"jars","v":[{"l":"","p":137}],"scent":10,"min":0,"isNew":false,"note":"","id":47,"img":"/assets/e5f69a270d22b54b.jpg"},{"name":"بابلز تغليف تل","cat":"shapes","v":[{"l":"","p":32}],"scent":5,"min":0,"isNew":false,"note":"","id":48,"img":"/assets/598d8ef0ff72a8b4.jpg"},{"name":"جار زجاج + وردة توليب","cat":"jars","v":[{"l":"","p":117}],"scent":10,"min":0,"isNew":false,"note":"","id":49,"img":"/assets/95709cc55d9c1df2.jpg"},{"name":"علبة + وردة عباد شمس","cat":"jars","v":[{"l":"","p":77}],"scent":10,"min":0,"isNew":false,"note":"","id":50,"img":"/assets/7f9b5532cbb4eb73.jpg"},{"name":"بابلز صغير تغليف بوكس","cat":"shapes","v":[{"l":"","p":42}],"scent":5,"min":0,"isNew":false,"note":"","id":51,"img":"/assets/e2798f7550a2ca26.jpg"},{"name":"وردة جوري تغليف تل","cat":"flowers","v":[{"l":"مقاس 6 سم","p":34},{"l":"مقاس 10 سم","p":42}],"scent":5,"min":0,"isNew":false,"note":"","id":52,"img":"/assets/49064184534d30f4.jpg"},{"name":"وردة توليب تغليف تل + فيونكة + كارت","cat":"flowers","v":[{"l":"","p":65}],"scent":5,"min":0,"isNew":true,"note":"","id":53,"img":"/assets/b4c4d499f2846356.jpg"},{"name":"بوكية ورد + تغليف تل","cat":"flowers","v":[{"l":"","p":60}],"scent":5,"min":0,"isNew":true,"note":"","id":54,"img":"/assets/3f0d4d55c00bdfcd.jpg"},{"name":"وردة توليب + فيونكة + كارت","cat":"flowers","v":[{"l":"","p":43}],"scent":5,"min":0,"isNew":true,"note":"","id":55,"img":"/assets/c6488e5454047790.jpg"},{"name":"وردة عباد شمس + حرف + كيس تل","cat":"flowers","v":[{"l":"","p":40}],"scent":5,"min":0,"isNew":true,"note":"","id":56,"img":"/assets/943c52b852085934.jpg"},{"name":"صدفة + فيونكة (بدون كارت)","cat":"shapes","v":[{"l":"","p":90}],"scent":5,"min":0,"isNew":true,"note":"","id":57,"img":"/assets/e2d47ddbcd3e8d58.jpg"},{"name":"وردة عباد شمس + بوكس + كارت بالاسم","cat":"flowers","v":[{"l":"","p":47}],"scent":5,"min":0,"isNew":true,"note":"","id":58,"img":"/assets/9ca3e9a20118cb13.jpg"},{"name":"وردة توليب تغليف حلقة + اسم أكليريك","cat":"flowers","v":[{"l":"","p":75}],"scent":5,"min":0,"isNew":true,"note":"","id":59,"img":"/assets/ceda992f46b72143.jpg"},{"name":"دبدوب 4 سم + سحابة + بلونة تغليف تل","cat":"bears","v":[{"l":"","p":45}],"scent":5,"min":0,"isNew":true,"note":"","id":60,"img":"/assets/8ea6df1db7fa4146.jpg"},{"name":"دبدوب بحصان تغليف تل","cat":"bears","v":[{"l":"","p":45}],"scent":5,"min":0,"isNew":true,"note":"","id":61,"img":"/assets/633981063583d518.jpg"},{"name":"أرنب بتغليف تل","cat":"animals","v":[{"l":"","p":55}],"scent":5,"min":50,"isNew":true,"note":"","id":62,"img":"/assets/7a107af069edeb34.jpg"},{"name":"توليب بوكية","cat":"flowers","v":[{"l":"","p":90}],"scent":5,"min":0,"isNew":true,"note":"","id":63,"img":"/assets/31a3e4f3ec4aa3f4.jpg"},{"name":"فستان بطرحة تغليف تل","cat":"shapes","v":[{"l":"","p":85}],"scent":5,"min":0,"isNew":true,"note":"","id":64,"img":"/assets/f170bcd468f65213.jpg"},{"name":"ميني جار + تغليف كرتون + فيونكة","cat":"jars","v":[{"l":"","p":60}],"scent":5,"min":50,"isNew":true,"note":"","id":65,"img":"/assets/0985acdf700d73e9.jpg"},{"name":"شيكولاتة + تغليف كرتون + فيونكة + لولي","cat":"gifts","v":[{"l":"","p":40}],"scent":0,"min":50,"isNew":true,"note":"","id":66,"img":"/assets/42f9309132a42885.jpg"},{"name":"أسد + تغليف كرتون + فيونكة","cat":"animals","v":[{"l":"","p":55}],"scent":5,"min":50,"isNew":true,"note":"","id":67,"img":"/assets/f076ed47b571bd5e.jpg"},{"name":"تي لايت أكليريك + كارت","cat":"jars","v":[{"l":"","p":40}],"scent":5,"min":0,"isNew":true,"note":"","id":68,"img":"/assets/bfe5a248da24973f.jpg"},{"name":"زرافة تغليف سلوفان / تل","cat":"animals","v":[{"l":"تغليف تل","p":34},{"l":"تغليف سلوفان","p":32}],"scent":5,"min":0,"isNew":false,"note":"","id":69,"img":"/assets/c2215261d726a10d.jpg"},{"name":"بابلز تغليف كرتون","cat":"shapes","v":[{"l":"","p":45}],"scent":5,"min":0,"isNew":false,"note":"","id":70,"img":"/assets/324b83f08f24da11.jpg"},{"name":"وردة عباد شمس تغليف تل / سلوفان","cat":"flowers","v":[{"l":"تغليف تل","p":30},{"l":"تغليف سلوفان","p":28}],"scent":5,"min":0,"isNew":false,"note":"","id":71,"img":"/assets/743ec11a4ac51284.jpg"},{"name":"خاتم خطوبة","cat":"shapes","v":[{"l":"","p":35}],"scent":5,"min":0,"isNew":false,"note":"","id":72,"img":"/assets/0dd4422a9ed97193.jpg"},{"name":"زرافة + حرف + تغليف سلوفان","cat":"animals","v":[{"l":"","p":36}],"scent":5,"min":0,"isNew":true,"note":"","id":73,"img":"/assets/f70ad7d2024daf27.jpg"},{"name":"دبدوب + قلب + بنبونيرة زجاج","cat":"bears","v":[{"l":"","p":87}],"scent":10,"min":50,"isNew":true,"note":"","id":74,"img":"/assets/3491aa28d230867d.jpg"},{"name":"فلافيلو 6.5 سم تغليف تل","cat":"animals","v":[{"l":"","p":48}],"scent":5,"min":0,"isNew":true,"note":"","id":75,"img":"/assets/09c3d75449486639.jpg"},{"name":"حلقة ذهبي + ملبس + فيونكة","cat":"shapes","v":[{"l":"","p":45}],"scent":0,"min":50,"isNew":true,"note":"","id":76,"img":"/assets/95fdeb1490a67d8a.jpg"},{"name":"دبدوب 9.5 سم","cat":"bears","v":[{"l":"","p":63}],"scent":5,"min":0,"isNew":true,"note":"","id":77,"img":"/assets/3c6612a1880d82bf.jpg"},{"name":"فيونكة تغليف تل","cat":"shapes","v":[{"l":"","p":53}],"scent":5,"min":0,"isNew":true,"note":"","id":78,"img":"/assets/fee991c9ba3aa7c5.jpg"},{"name":"جار 150 مل + دبدوب + بالون","cat":"jars","v":[{"l":"","p":117}],"scent":10,"min":50,"isNew":true,"note":"","id":79,"img":"/assets/f00d1b1f146201c3.jpg"},{"name":"جار 150 مل + دبدوب + وردة عباد شمس","cat":"jars","v":[{"l":"","p":122}],"scent":10,"min":50,"isNew":true,"note":"","id":80,"img":"/assets/824b8185445de1c5.jpg"}];
+
+var $=function(s,r){return (r||document).querySelector(s)};
+var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+var fmt=function(n){return Number(n).toLocaleString('en-US')};
+var esc=function(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})};
+var norm=function(s){return String(s).toLowerCase().replace(/[ً-ٰٟـ]/g,'').replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').replace(/ؤ/g,'و').replace(/ئ/g,'ي').trim()};
+var latin=function(s){return String(s).replace(/[٠-٩]/g,function(d){return String(d.charCodeAt(0)-1632)}).replace(/[۰-۹]/g,function(d){return String(d.charCodeAt(0)-1776)})};
+function catName(id){var c=CATS.filter(function(x){return x.id===id})[0];return c?c.name:''}
+
+var byId={};
+PRODUCTS.forEach(function(p){
+  byId[p.id]=p;
+  p._n=norm(p.name+' '+catName(p.cat));
+  p._min=Math.min.apply(null,p.v.map(function(v){return v.p}));
+});
+function unit(p,vi,sc){return p.v[vi].p+(sc?p.scent:0)}
+function minQty(p){return p.min||10}
+function defQty(p){return minQty(p)}
+var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var savedMood='';
+try{savedMood=localStorage.getItem('pmcandle-theme')||''}catch(e){}
+if(savedMood==='light'||savedMood==='dark')document.documentElement.setAttribute('data-theme',savedMood);
+function currentMood(){var m=document.documentElement.getAttribute('data-theme');if(m==='light'||m==='dark')return m;return window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}
+function syncMoodButton(){var m=currentMood(),b=$('.theme-toggle');if(!b)return;b.setAttribute('aria-pressed',m==='dark'?'true':'false');$('.theme-toggle-icon',b).textContent=m==='dark'?'☀':'☾';$('#themeMoodLabel').textContent=m==='dark'?'NIGHT MODE':'LIGHT MODE';b.setAttribute('title',m==='dark'?'التبديل إلى الوضع الفاتح':'التبديل إلى الوضع الليلي')}
+function toggleMood(){var next=currentMood()==='dark'?'light':'dark';document.documentElement.setAttribute('data-theme',next);try{localStorage.setItem('pmcandle-theme',next)}catch(e){}syncMoodButton()}
+var validPalettes=['classic','rose','olive'];
+var savedPalette='classic';
+try{var paletteStored=localStorage.getItem('pmcandle-palette');if(validPalettes.indexOf(paletteStored)>-1)savedPalette=paletteStored}catch(e){}
+document.documentElement.setAttribute('data-palette',savedPalette);
+function syncPaletteButtons(){
+  $$('.palette-choice').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.paletteChoice===savedPalette?'true':'false')});
+  var names={classic:'Classic Beige',rose:'Rose Blush',olive:'Olive Calm'};
+  var label=$('#paletteCurrentLabel');if(label)label.textContent=names[savedPalette]||names.classic;
+}
+function setPalette(name){
+  if(validPalettes.indexOf(name)<0)return;
+  savedPalette=name;document.documentElement.setAttribute('data-palette',name);
+  try{localStorage.setItem('pmcandle-palette',name)}catch(e){}
+  syncPaletteButtons();
+}
+function closePaletteMenu(){
+  var panel=$('#paletteMenu'),trigger=$('.palette-trigger');
+  if(panel)panel.hidden=true;
+  if(trigger)trigger.setAttribute('aria-expanded','false');
+}
+function togglePaletteMenu(){
+  var panel=$('#paletteMenu'),trigger=$('.palette-trigger');if(!panel||!trigger)return;
+  panel.hidden=!panel.hidden;trigger.setAttribute('aria-expanded',panel.hidden?'false':'true');
+}
+
+
+var st={q:'',cat:'all',price:'all',onlyNew:false,sort:'catalog',shown:24};
+var cart=loadCart();
+function loadCart(){
+  try{
+    var r=JSON.parse(localStorage.getItem('pmcandle-cart')||'[]');
+    if(!Array.isArray(r))return [];
+    return r.filter(function(i){return byId[i.pid]&&i.qty>0&&byId[i.pid].v[i.vi]}).map(function(i){return {pid:i.pid,vi:i.vi,sc:!!i.sc&&!!byId[i.pid].scent,qty:i.qty|0}});
+  }catch(e){return []}
+}
+function saveCart(){try{localStorage.setItem('pmcandle-cart',JSON.stringify(cart))}catch(e){}}
+function loadForm(){try{return JSON.parse(localStorage.getItem('pmcandle-form')||'{}')||{}}catch(e){return {}}}
+function saveForm(){try{localStorage.setItem('pmcandle-form',JSON.stringify(getForm()))}catch(e){}}
+function getForm(){return {name:$('#fName').value.trim(),phone:$('#fPhone').value.trim(),city:$('#fCity').value.trim(),date:$('#fDate').value.trim(),note:$('#fNote').value.trim()}}
+
+/* ---------- listing ---------- */
+function list(){
+  var toks=norm(st.q).split(/\s+/).filter(Boolean);
+  var b=BUCKETS.filter(function(x){return x.id===st.price})[0];
+  var r=PRODUCTS.filter(function(p){
+    return (st.cat==='all'||p.cat===st.cat)&&(!st.onlyNew||p.isNew)&&(!b||!b.f||b.f(p._min))&&toks.every(function(t){return p._n.indexOf(t)>-1});
+  });
+  if(st.sort==='asc')r.sort(function(a,b){return a._min-b._min||a.id-b.id});
+  else if(st.sort==='desc')r.sort(function(a,b){return b._min-a._min||a.id-b.id});
+  else if(st.sort==='new')r.sort(function(a,b){return (b.isNew?1:0)-(a.isNew?1:0)||a.id-b.id});
+  return r;
+}
+function priceBlock(p){
+  var multi=p.v.length>1,base=p._min;
+  var h='<div class="price">'+(multi?'<span class="c">من</span>':'')+'<span class="n">'+fmt(base)+'</span><span class="c">ج.م</span></div>';
+  if(p.scent)h+='<div class="sub">'+(multi?('إضافة العطر +'+p.scent+' ج.م'):('بالعطر '+fmt(base+p.scent)+' ج.م'))+'</div>';
+  return h;
+}
+function cardHTML(p){
+  return '<article class="card">'+(p.isNew?'<span class="badge">وصل حديثاً</span>':'')+
+  '<button class="pic" type="button" data-open="'+p.id+'" aria-label="'+esc(p.name)+'"><img src="'+p.img+'" alt="'+esc(p.name)+'" width="480" height="360" loading="lazy"></button>'+
+  '<div class="body"><h3><button class="lnk" type="button" data-open="'+p.id+'">'+esc(p.name)+'</button></h3>'+priceBlock(p)+
+  (p.min?'<span class="tag">أقل كمية '+p.min+' قطعة</span>':'')+
+  '<button class="btn gold" type="button" data-open="'+p.id+'">إضافة للسلة</button></div></article>';
+}
+function renderResults(){
+  var r=list(),shown=r.slice(0,st.shown);
+  $('#grid').innerHTML=shown.map(cardHTML).join('');
+  $('#rcount').textContent=r.length?('عرض '+shown.length+' من '+r.length+' منتج'):'لا توجد نتائج';
+  $('#more').parentNode.hidden=shown.length>=r.length;
+  $('#empty').hidden=r.length>0;
+  $('#rtitle').textContent=st.q?('نتائج البحث عن «'+st.q+'»'):(st.cat!=='all'?catName(st.cat):(st.onlyNew?'وصل حديثاً':'كل المنتجات'));
+  var ch=[];
+  if(st.q)ch.push(['q','بحث: '+st.q]);
+  if(st.cat!=='all')ch.push(['cat','القسم: '+catName(st.cat)]);
+  if(st.price!=='all')ch.push(['price',BUCKETS.filter(function(b){return b.id===st.price})[0].name]);
+  if(st.onlyNew)ch.push(['new','وصل حديثاً']);
+  $('#achips').innerHTML=ch.map(function(c){return '<button type="button" data-clear="'+c[0]+'">'+esc(c[1])+'</button>'}).join('');
+  syncUI();
+}
+function syncUI(){
+  $$('input[name="fcat"]').forEach(function(i){i.checked=i.value===st.cat});
+  $$('input[name="fprice"]').forEach(function(i){i.checked=i.value===st.price});
+  var fn=$('#fnew');if(fn)fn.checked=st.onlyNew;
+  $('#sort').value=st.sort;
+  $('#searchCat').value=st.cat;
+  if(document.activeElement!==$('#q'))$('#q').value=st.q;
+  $$('#subnav button').forEach(function(b){
+    var on=b.dataset.nav==='new'?st.onlyNew&&st.cat==='all':(b.dataset.nav==='all'?(st.cat==='all'&&!st.onlyNew):(st.cat===b.dataset.nav&&!st.onlyNew));
+    b.setAttribute('aria-current',on?'true':'false');
+  });
+}
+function recommendProducts(){
+  var occasion=$('#recommendOccasion').value,budget=$('#recommendBudget').value,qty=parseQty($('#recommendQty').value);
+  var host=$('#recommendResults');
+  if(!qty||qty<STORE.orderMin){
+    host.innerHTML='<p class="recommend-empty">اكتب عدد قطع لا يقل عن '+fmt(STORE.orderMin)+' قطعة علشان نقدر نرشحلك عروض مناسبة.</p>';
+    $('#recommendQty').focus();return;
+  }
+  var cats={baby:['animals','bears'],wedding:['flowers','shapes','gifts'],gift:['gifts','jars','flowers','bears'],decor:['jars','shapes','flowers'],all:['animals','bears','flowers','shapes','jars','gifts']}[occasion]||[];
+  var filtered=PRODUCTS.filter(function(p){
+    var price=p._min;
+    var inBudget=budget==='all'||(budget==='40'?price<40:budget==='60'?price>=40&&price<60:budget==='100'?price>=60&&price<100:price>=100);
+    return cats.indexOf(p.cat)>-1&&inBudget&&qty>=minQty(p);
+  });
+  filtered.sort(function(a,b){
+    var ca=cats.indexOf(a.cat),cb=cats.indexOf(b.cat);
+    return ca-cb||a._min-b._min||a.id-b.id;
+  });
+  var chosen=filtered.slice(0,6);
+  if(!chosen.length){host.innerHTML='<p class="recommend-empty">مفيش منتجات متاحة تحقق المناسبة والميزانية والكمية دي. جرّب ميزانية تانية أو زوّد عدد القطع.</p>';return}
+  var labels={baby:'اقتراحات للسبوع والبيبي',wedding:'اقتراحات للخطوبة وكتب الكتاب والفرح',gift:'اقتراحات للهدايا والمناسبات',decor:'اقتراحات للديكور والأجواء',all:'اختيارات متنوعة من الكتالوج'};
+  host.innerHTML='<p class="recommend-note">'+labels[occasion]+' · '+chosen.length+' ترشيحات · '+fmt(qty)+' قطعة لكل اختيار</p><div class="grid">'+chosen.map(function(p){
+    var total=p._min*qty;
+    return '<article class="card"><button class="pic" type="button" data-rec-open="'+p.id+'" data-rec-qty="'+qty+'" aria-label="'+esc(p.name)+'"><img src="'+p.img+'" alt="'+esc(p.name)+'" width="480" height="360" loading="lazy"></button><div class="body"><h3>'+esc(p.name)+'</h3>'+priceBlock(p)+'<div class="recommend-total">'+fmt(p._min)+' × '+fmt(qty)+' = '+fmt(total)+' ج.م</div><div class="recommend-qty-note">إجمالي تقديري قبل أي إضافات اختيارية</div><button class="btn gold" type="button" data-rec-open="'+p.id+'" data-rec-qty="'+qty+'">اختار المنتج بالكمية دي</button></div></article>';
+  }).join('')+'</div>';
+}
+
+function renderStatic(){
+  $$('[data-logo]').forEach(function(i){i.src=LOGO});
+  var opts='<option value="all">كل الأقسام</option>'+CATS.map(function(c){return '<option value="'+c.id+'">'+c.name+'</option>'}).join('');
+  $('#searchCat').innerHTML=opts;
+  $('#subnav').innerHTML='<button type="button" data-nav="all" data-cat="all">كل المنتجات</button>'+CATS.map(function(c){return '<button type="button" data-nav="'+c.id+'" data-cat="'+c.id+'">'+c.name+'</button>'}).join('')+'<button type="button" data-nav="new" data-act="only-new">وصل حديثاً</button>';
+  $('#tiles').innerHTML=CATS.map(function(c){
+    var ps=PRODUCTS.filter(function(p){return p.cat===c.id}),four=ps.slice(0,4);
+    return '<button class="tile" type="button" data-cat="'+c.id+'"><h3>'+c.name+'</h3><div class="mosaic">'+four.map(function(p){return '<img src="'+p.img+'" alt="" loading="lazy" width="480" height="360">'}).join('')+'</div><span class="more">'+ps.length+' منتج · تسوّق الآن</span></button>';
+  }).join('');
+  $('#rail').innerHTML=PRODUCTS.filter(function(p){return p.isNew}).map(function(p){
+    return '<button class="mini" type="button" data-open="'+p.id+'"><img src="'+p.img+'" alt="" loading="lazy" width="480" height="360"><span class="t">'+esc(p.name)+'</span><span class="p">'+fmt(p._min)+' <small>ج.م'+(p.v.length>1?' وأكثر':'')+'</small></span></button>';
+  }).join('');
+  var all=[{id:'all',name:'كل الأقسام'}].concat(CATS);
+  $('#fbody').innerHTML=
+   '<div class="fgroup"><h4>القسم</h4>'+all.map(function(c){return '<label class="fopt"><input type="radio" name="fcat" value="'+c.id+'"><span>'+c.name+'</span><em>'+(c.id==='all'?PRODUCTS.length:PRODUCTS.filter(function(p){return p.cat===c.id}).length)+'</em></label>'}).join('')+'</div>'+
+   '<div class="fgroup"><h4>السعر للقطعة</h4>'+BUCKETS.map(function(b){return '<label class="fopt"><input type="radio" name="fprice" value="'+b.id+'"><span>'+b.name+'</span></label>'}).join('')+'</div>'+
+   '<div class="fgroup"><h4>خيارات</h4><label class="fopt"><input type="checkbox" id="fnew"><span>وصل حديثاً</span></label></div>'+
+   '<button class="btn line sm" type="button" data-act="clear-all">مسح كل التصفية</button>';
+  var soc=[];
+  function socialIcon(url,label,svg){if(url)soc.push('<a class="social-link" href="'+esc(url)+'" target="_blank" rel="noopener noreferrer" aria-label="'+label+'" title="'+label+'">'+svg+'<span>'+label+'</span></a>')}
+  socialIcon(STORE.facebook,'Facebook','<svg viewBox="0 0 24 24" aria-hidden="true"><path class="solid" d="M14 8h3V4h-3c-3 0-5 2-5 5v2H6v4h3v5h4v-5h3l1-4h-4V9c0-.7.3-1 1-1z"/></svg>');
+  socialIcon(STORE.instagram,'Instagram','<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" class="solid"/></svg>');
+  socialIcon(STORE.tiktok,'TikTok','<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3v11.2a4.2 4.2 0 1 1-3.5-4.1v3.2a1.2 1.2 0 1 0 .5 1V3h3c.3 2.2 1.5 3.5 4 4v3c-1.6-.1-3-.7-4-1.6"/></svg>');
+  socialIcon('https://wa.me/'+STORE.whatsapp.replace(/\D/g,''),'WhatsApp','<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.7a8 8 0 0 1-11.8 7L4 20l1.3-4A8 8 0 1 1 20 11.7Z"/><path d="M9 8.5c.4-.5.8-.4 1.1.1l.7 1.4c.2.4.1.6-.2.9l-.5.5c.7 1.4 1.7 2.4 3.1 3l.5-.6c.2-.3.5-.4.8-.2l1.4.7c.5.2.6.6.2 1.1-.4.6-1.1.9-1.8.8-3.2-.5-6.4-3.7-6.8-6.8-.1-.4.5-1.1 1.1-.9Z"/></svg>');
+  $('#soc').innerHTML=soc.join('');
+  syncMoodButton();
+  if(window.matchMedia&&window.matchMedia('(max-width:820px)').matches)$('#filters').removeAttribute('open');
+  var f=loadForm();
+  $('#fName').value=f.name||'';$('#fPhone').value=f.phone||'';$('#fCity').value=f.city||'';$('#fDate').value=f.date||'';$('#fNote').value=f.note||'';
+}
+function goShop(){
+  var el=$('#shop');
+  try{el.scrollIntoView({behavior:reduce?'auto':'smooth',block:'start'})}catch(e){el.scrollIntoView()}
+}
+function setFilter(patch,scroll){
+  for(var k in patch)st[k]=patch[k];
+  st.shown=24;
+  renderResults();
+  if(scroll)goShop();
+}
+
+/* ---------- product modal ---------- */
+var cur=null,lastFocus=null;
+function legendFor(p){var l=p.v[0].l;return /سم/.test(l)?'المقاس':(/تغليف/.test(l)?'التغليف':'النوع')}
+function openProduct(id){
+  var p=byId[id];if(!p)return;
+  lastFocus=document.activeElement;
+  cur={p:p,vi:0,sc:false,qty:defQty(p)};
+  var sims=PRODUCTS.filter(function(x){return x.cat===p.cat&&x.id!==p.id});
+  var after=sims.filter(function(x){return x.id>p.id}).concat(sims.filter(function(x){return x.id<p.id})).slice(0,6);
+  var qchips=[10,30,50,100,200].map(function(n){return '<button type="button" data-act="qset" data-v="'+n+'"'+(n<minQty(p)?' disabled':'')+'>'+n+'</button>'}).join('');
+  $('#panel').innerHTML=
+  '<button class="xbtn" type="button" data-act="close-modal" aria-label="إغلاق"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><path d="M5 5l14 14M19 5 5 19"/></svg></button>'+
+  '<div class="pm"><div class="pm-pic"><img src="'+p.img+'" alt="'+esc(p.name)+'"></div><div class="pm-info">'+
+  '<button class="lnk crumb" type="button" data-cat="'+p.cat+'">'+catName(p.cat)+'</button>'+
+  '<h2 id="pmTitle">'+esc(p.name)+'</h2>'+
+  '<div class="tags">'+(p.isNew?'<span class="badge">وصل حديثاً</span>':'')+(p.min?'<span class="tag">أقل كمية '+p.min+' قطعة</span>':'')+(p.note?'<span class="tag">'+esc(p.note)+'</span>':'')+'</div>'+
+  '<div class="pm-price"><span class="n" id="pmUnit"></span> <span class="c">ج.م للقطعة</span></div>'+
+  (p.v.length>1?'<fieldset class="opt"><legend>'+legendFor(p)+'</legend><div class="choices">'+p.v.map(function(v,i){return '<label class="choice"><input type="radio" name="pv" value="'+i+'"'+(i===0?' checked':'')+'><span>'+esc(v.l)+' · '+fmt(v.p)+' ج.م</span></label>'}).join('')+'</div></fieldset>':'')+
+  (p.scent?'<fieldset class="opt"><legend>العطر</legend><div class="choices"><label class="choice"><input type="radio" name="ps" value="0" checked><span>بدون عطر</span></label><label class="choice"><input type="radio" name="ps" value="1"><span>بالعطر (+'+p.scent+' ج.م)</span></label></div></fieldset>':'')+
+  '<div class="opt"><div class="lg">الكمية</div><div class="qtyrow"><div class="stepper"><button type="button" data-act="qdec" aria-label="تقليل">−</button><input id="pmQty" inputmode="numeric" value="'+cur.qty+'" aria-label="الكمية"><button type="button" data-act="qinc" aria-label="زيادة">+</button></div><div class="qchips" id="qchips">'+qchips+'</div></div><p class="hint" id="pmHint"></p></div>'+
+  '<div class="pm-total"><span>إجمالي الصنف</span><b id="pmTotal"></b></div>'+
+  '<div class="pm-actions"><button class="btn gold" type="button" id="pmAdd" data-act="add">أضف إلى السلة</button><button class="btn line" type="button" id="pmBuy" data-act="buy">أضف وافتح السلة</button></div>'+
+  '</div>'+
+  (after.length?'<div class="pm-sim"><h2 class="sec" style="font-size:17px">منتجات من نفس القسم</h2><div class="rail-track">'+after.map(function(x){return '<button class="mini" type="button" data-open="'+x.id+'"><img src="'+x.img+'" alt="" loading="lazy"><span class="t">'+esc(x.name)+'</span><span class="p">'+fmt(x._min)+' <small>ج.م</small></span></button>'}).join('')+'</div></div>':'')+
+  '</div>';
+  $('#modal').classList.add('on');
+  document.body.style.overflow='hidden';
+  updModal();
+  $('#panel').scrollTop=0;
+  $('#panel .xbtn').focus();
+}
+function updModal(){
+  if(!cur)return;
+  var p=cur.p,u=unit(p,cur.vi,cur.sc),ok=cur.qty>=minQty(p);
+  $('#pmUnit').textContent=fmt(u);
+  $('#pmTotal').textContent=fmt(u*cur.qty)+' ج.م';
+  var h=$('#pmHint');
+  h.className='hint'+(ok?'':' bad');
+  h.textContent=ok?('الحد الأدنى لهذا الصنف '+minQty(p)+' قطعة · تأكيد الأوردر بعد وصول إجمالي السلة إلى '+STORE.orderMin+' قطعة'):(cur.qty<1?'اكتب كمية صحيحة':('أقل كمية لهذا الصنف '+minQty(p)+' قطعة'));
+  $('#pmAdd').disabled=!ok;$('#pmBuy').disabled=!ok;
+  $$('#qchips button').forEach(function(b){b.classList.toggle('on',+b.dataset.v===cur.qty)});
+}
+function closeModal(){
+  $('#modal').classList.remove('on');
+  cur=null;
+  if(!$('#drawer').classList.contains('on'))document.body.style.overflow='';
+  if(lastFocus&&lastFocus.focus)try{lastFocus.focus()}catch(e){}
+}
+function addCurrent(){
+  var p=cur.p,vi=cur.vi,sc=cur.sc,q=cur.qty;
+  var k=cart.filter(function(i){return i.pid===p.id&&i.vi===vi&&i.sc===sc})[0];
+  if(k)k.qty+=q;else cart.push({pid:p.id,vi:vi,sc:sc,qty:q});
+  saveCart();renderCart();
+  return p;
+}
+
+/* ---------- cart ---------- */
+function stats(){
+  var pc=0,t=0;
+  cart.forEach(function(i){var p=byId[i.pid];pc+=i.qty;t+=i.qty*unit(p,i.vi,i.sc)});
+  var d=pc>STORE.discountOver?Math.round(t*STORE.discountPct/100):0;
+  return {pieces:pc,sub:t,disc:d,total:t-d};
+}
+function problems(){
+  var out=[],s=stats();
+  if(!cart.length)return ['أضف منتجات للسلة'];
+  if(s.pieces<STORE.orderMin)out.push('باقي '+(STORE.orderMin-s.pieces)+' قطعة للوصول إلى الحد الأدنى للأوردر ('+STORE.orderMin+' قطعة)');
+  cart.forEach(function(i){var p=byId[i.pid];if(i.qty<minQty(p))out.push('«'+p.name+'» أقل كمية '+minQty(p)+' قطعة')});
+  var f=getForm();
+  if(!f.name)out.push('اكتب الاسم');
+  if(latin(f.phone).replace(/\D/g,'').length<10)out.push('اكتب رقم موبايل صحيح');
+  return out;
+}
+function rowHTML(i,idx){
+  var p=byId[i.pid],u=unit(p,i.vi,i.sc);
+  var op=[p.v.length>1?p.v[i.vi].l:'',p.scent?(i.sc?'بالعطر':'بدون عطر'):''].filter(Boolean).join(' · ');
+  return '<li class="line" data-i="'+idx+'"><img src="'+p.img+'" alt=""><div><div class="nm">'+esc(p.name)+'</div>'+(op?'<div class="op">'+esc(op)+'</div>':'')+'<div class="op">'+fmt(u)+' ج.م للقطعة</div>'+
+  '<div class="qtyrow"><div class="stepper"><button type="button" data-act="dec" data-i="'+idx+'" aria-label="تقليل">−</button><input class="qin" inputmode="numeric" value="'+i.qty+'" data-i="'+idx+'" aria-label="الكمية"><button type="button" data-act="inc" data-i="'+idx+'" aria-label="زيادة">+</button></div><b class="lt" data-lt="'+idx+'"></b><button class="lnk rm" type="button" data-act="rm" data-i="'+idx+'">حذف</button></div>'+
+  '<div class="warn" data-w="'+idx+'" hidden></div></div></li>';
+}
+function renderCart(){
+  $('#lines').innerHTML=cart.map(rowHTML).join('');
+  $('#cartEmpty').hidden=cart.length>0;
+  $('#cartRest').hidden=cart.length===0;
+  renderSummary();
+}
+function orderText(){
+  var f=getForm(),s=stats(),L=[];
+  L.push('طلب جديد من متجر PM Candle','');
+  L.push('الاسم: '+f.name,'الموبايل: '+f.phone);
+  if(f.city)L.push('المحافظة / العنوان: '+f.city);
+  if(f.date)L.push('تاريخ المناسبة: '+f.date);
+  L.push('','تفاصيل الطلب:');
+  cart.forEach(function(i,n){
+    var p=byId[i.pid],u=unit(p,i.vi,i.sc);
+    var o=[p.v.length>1?p.v[i.vi].l:'',p.scent?(i.sc?'بالعطر':'بدون عطر'):''].filter(Boolean).join(' - ');
+    L.push((n+1)+') '+p.name+(o?' ('+o+')':''),'    '+i.qty+' × '+fmt(u)+' = '+fmt(i.qty*u)+' ج.م');
+  });
+  L.push('','عدد القطع: '+s.pieces);
+  if(s.disc)L.push('الإجمالي قبل الخصم: '+fmt(s.sub)+' ج.م','خصم '+STORE.discountPct+'% (أوردر أكتر من '+STORE.discountOver+' قطعة): -'+fmt(s.disc)+' ج.م','الإجمالي بعد الخصم: '+fmt(s.total)+' ج.م');
+  else L.push('إجمالي المنتجات: '+fmt(s.total)+' ج.م');
+  L.push('(الشحن يُحدد عند تأكيد الطلب)');
+  if(f.note)L.push('','ملاحظات: '+f.note);
+  return L.join('\n');
+}
+function renderSummary(){
+  var s=stats(),n=cart.length;
+  $('#cartCnt').textContent=s.pieces;
+  $('.cart-btn').setAttribute('aria-label','السلة، '+s.pieces+' قطعة');
+  $('#dTitle').textContent='سلة الطلب'+(n?' ('+n+' '+(n===1?'صنف':'أصناف')+')':'');
+  $('#sPieces').textContent=s.pieces;
+  $('#sTotal').textContent=fmt(s.total);
+  $('#sLbl').textContent=s.disc?'الإجمالي بعد الخصم':'إجمالي المنتجات';
+  $('#discRow').hidden=!s.disc;
+  $('#sSub').textContent=fmt(s.sub)+' ج.م';
+  $('#sDisc').textContent='−'+fmt(s.disc)+' ج.م';
+  $('#sPct').textContent=STORE.discountPct;
+  $('#discTxt').textContent=s.disc?('تم تطبيق خصم '+STORE.discountPct+'% على الأوردر'):('اطلب أكتر من '+STORE.discountOver+' قطعة (باقي '+(STORE.discountOver+1-s.pieces)+') واحصل على خصم '+STORE.discountPct+'%');
+  $('#discTxt').style.color=s.disc?'var(--ok)':'';
+  cart.forEach(function(i,idx){
+    var p=byId[i.pid],lt=$('[data-lt="'+idx+'"]'),w=$('[data-w="'+idx+'"]');
+    if(lt)lt.textContent=fmt(i.qty*unit(p,i.vi,i.sc))+' ج.م';
+    if(w){var bad=i.qty<minQty(p);w.hidden=!bad;if(bad)w.textContent='أقل كمية لهذا الصنف '+minQty(p)+' قطعة'}
+  });
+  var pc=Math.min(100,Math.round(s.pieces/STORE.orderMin*100));
+  $('#meter i').style.width=pc+'%';
+  $('#meter').classList.toggle('full',s.pieces>=STORE.orderMin);
+  $('#minTxt').textContent=s.pieces>=STORE.orderMin?('تم الوصول للحد الأدنى للأوردر ('+STORE.orderMin+' قطعة)'):('الحد الأدنى للأوردر '+STORE.orderMin+' قطعة · عندك '+s.pieces);
+  var pr=problems();
+  $('#probs').innerHTML=pr.map(function(x){return '<li>'+esc(x)+'</li>'}).join('');
+  var wa=$('#waBtn');
+  wa.setAttribute('aria-disabled',pr.length?'true':'false');
+  var num=STORE.whatsapp.replace(/\D/g,'');
+  wa.href=pr.length?'#':('https://wa.me/'+num+'?text='+encodeURIComponent(orderText()));
+}
+function openCart(){
+  lastFocus=document.activeElement;
+  $('#modal').classList.remove('on');cur=null;
+  $('#drawer').classList.add('on');$('#dscrim').classList.add('on');
+  document.body.style.overflow='hidden';
+  renderCart();
+  var b=$('#drawer .xbtn');if(b)b.focus();
+}
+function closeCart(){
+  $('#drawer').classList.remove('on');$('#dscrim').classList.remove('on');
+  document.body.style.overflow='';
+  if(lastFocus&&lastFocus.focus)try{lastFocus.focus()}catch(e){}
+}
+var toastT=null;
+function toast(msg,withBtn){
+  $('#toastTxt').textContent=msg;
+  $('#toastBtn').hidden=!withBtn;
+  $('#toast').hidden=false;
+  clearTimeout(toastT);
+  toastT=setTimeout(function(){$('#toast').hidden=true},withBtn?5000:2600);
+}
+function copyOrder(){
+  var pr=problems();
+  if(pr.length){renderSummary();toast('أكمل بيانات الطلب أولاً');return}
+  var t=orderText(),box=$('#ordbox');
+  box.value=t;
+  var fallback=function(){box.hidden=false;box.focus();box.select();toast('حدد النص وانسخه')};
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(t).then(function(){toast('تم نسخ نص الطلب')},fallback);
+  }else fallback();
+}
+
+/* ---------- events ---------- */
+function parseQty(v){var n=parseInt(latin(v).replace(/\D/g,''),10);return isNaN(n)?0:n}
+document.addEventListener('click',function(e){
+  var t=e.target.closest('[data-open],[data-cat],[data-act],[data-clear],[data-palette-choice],[data-rec-open]');
+  if(!t){
+    if(!e.target.closest('.header-palette'))closePaletteMenu();
+    if(e.target===$('#modal'))closeModal();
+    if(e.target===$('#dscrim'))closeCart();
+    return;
+  }
+  if(t.dataset.paletteChoice){setPalette(t.dataset.paletteChoice);closePaletteMenu();return}
+  if(t.dataset.recOpen){
+    var recId=+t.dataset.recOpen,requestedQty=parseQty(t.dataset.recQty);
+    openProduct(recId);
+    if(cur){
+      var lowestIndex=0;
+      for(var vi=1;vi<cur.p.v.length;vi++)if(cur.p.v[vi].p<cur.p.v[lowestIndex].p)lowestIndex=vi;
+      cur.vi=lowestIndex;cur.sc=false;cur.qty=Math.max(requestedQty,minQty(cur.p));
+      var radios=$$('input[name="pv"]');radios.forEach(function(r){r.checked=+r.value===cur.vi});
+      var scent=$$('input[name="ps"]');scent.forEach(function(r){r.checked=r.value==='0'});
+      $('#pmQty').value=cur.qty;updModal();
+    }
+    return;
+  }
+  if(t.dataset.open){openProduct(+t.dataset.open);return}
+  if(t.dataset.clear){
+    var k=t.dataset.clear;
+    setFilter(k==='q'?{q:''}:k==='cat'?{cat:'all'}:k==='price'?{price:'all'}:{onlyNew:false});return;
+  }
+  if(t.dataset.cat){
+    if($('#modal').classList.contains('on'))closeModal();
+    setFilter({cat:t.dataset.cat,onlyNew:false,q:'',price:'all'},true);return;
+  }
+  var a=t.dataset.act,i=+t.dataset.i;
+  if(a==='home'){e.preventDefault();setFilter({cat:'all',onlyNew:false,q:'',price:'all'});window.scrollTo(0,0)}
+  else if(a==='toggle-theme'){toggleMood()}
+  else if(a==='toggle-palette-menu'){togglePaletteMenu()}
+  else if(a==='recommend'){recommendProducts()}
+  else if(a==='only-new'){setFilter({onlyNew:true,cat:'all',q:'',price:'all'},true)}
+  else if(a==='clear-all'){setFilter({q:'',cat:'all',price:'all',onlyNew:false,sort:'catalog'})}
+  else if(a==='more'){st.shown+=24;renderResults()}
+  else if(a==='cart'){openCart()}
+  else if(a==='close-cart'){closeCart()}
+  else if(a==='close-modal'){closeModal()}
+  else if(a==='qset'){cur.qty=+t.dataset.v;$('#pmQty').value=cur.qty;updModal()}
+  else if(a==='qinc'){cur.qty=Math.max(0,cur.qty)+10;$('#pmQty').value=cur.qty;updModal()}
+  else if(a==='qdec'){cur.qty=Math.max(1,cur.qty-10);$('#pmQty').value=cur.qty;updModal()}
+  else if(a==='add'){var p=addCurrent();closeModal();toast('تمت إضافة «'+p.name+'» إلى السلة',true)}
+  else if(a==='buy'){addCurrent();closeModal();openCart()}
+  else if(a==='inc'){cart[i].qty+=10;saveCart();renderCart()}
+  else if(a==='dec'){cart[i].qty=Math.max(minQty(byId[cart[i].pid]),cart[i].qty-10);saveCart();renderCart()}
+  else if(a==='rm'){cart.splice(i,1);saveCart();renderCart()}
+  else if(a==='copy'){copyOrder()}
+});
+$('#waBtn').addEventListener('click',function(e){
+  if(this.getAttribute('aria-disabled')==='true'){e.preventDefault();toast('أكمل بيانات الطلب أولاً')}
+});
+document.addEventListener('input',function(e){
+  var t=e.target;
+  if(t.id==='pmQty'&&cur){cur.qty=parseQty(t.value);updModal()}
+  else if(t.classList&&t.classList.contains('qin')){
+    var i=+t.dataset.i;cart[i].qty=parseQty(t.value);saveCart();renderSummary();
+  }
+  else if(t.closest&&t.closest('#orderForm')){saveForm();renderSummary()}
+  else if(t.id==='q'){st.q=t.value;st.shown=24;renderResults()}
+});
+document.addEventListener('change',function(e){
+  var t=e.target;
+  if(t.name==='pv'&&cur){cur.vi=+t.value;updModal()}
+  else if(t.name==='ps'&&cur){cur.sc=t.value==='1';updModal()}
+  else if(t.name==='fcat'){setFilter({cat:t.value})}
+  else if(t.name==='fprice'){setFilter({price:t.value})}
+  else if(t.id==='fnew'){setFilter({onlyNew:t.checked})}
+  else if(t.id==='sort'){setFilter({sort:t.value})}
+  else if(t.id==='searchCat'){setFilter({cat:t.value})}
+  else if(t.classList&&t.classList.contains('qin')){var qi=+t.dataset.i;if(cart[qi]){cart[qi].qty=Math.max(minQty(byId[cart[qi].pid]),cart[qi].qty);saveCart()}renderCart()}
+});
+$('#searchForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  setFilter({q:$('#q').value,cat:$('#searchCat').value,onlyNew:false},true);
+});
+function trap(e,root){
+  var f=$$('button:not([disabled]),input:not([disabled]),select,textarea:not([hidden]),a[href]',root).filter(function(x){return x.offsetParent!==null||x===document.activeElement});
+  if(!f.length)return;
+  var first=f[0],last=f[f.length-1];
+  if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}
+  else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}
+}
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){
+    if($('#modal').classList.contains('on'))closeModal();
+    else if($('#drawer').classList.contains('on'))closeCart();
+  }else if(e.key==='Tab'){
+    if($('#modal').classList.contains('on'))trap(e,$('#panel'));
+    else if($('#drawer').classList.contains('on'))trap(e,$('#drawer'));
+  }
+});
+
+renderStatic();
+renderResults();
+renderCart();
+syncMoodButton();
+syncPaletteButtons();
+})();
+</script>
+
+</body></html>
